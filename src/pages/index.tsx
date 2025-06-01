@@ -1,3 +1,6 @@
+"use client"
+
+import React, { useEffect } from "react";
 import classNames from "classnames";
 import { Geist } from "next/font/google";
 import Image from "next/image";
@@ -22,9 +25,19 @@ export default function Home() {
   const handleSend = useCallback(async() => {
     console.info(form);
     try {
-      const res = await fetch("http://192.168.1.62:8080/api/v1/employees/createEmployee", {
+      const res = await fetch("/api/v1/employees/createEmployee/", {
         method: "POST",
-        body: JSON.stringify(form),
+        body: JSON.stringify({
+          "firstName": "Maciel",
+          "midName": "Marilyn",
+          "fatherLastName": "Garcia",
+          "motherLastName": "Mendez",
+          "age": 37,
+          "gender": "FEMALE",
+          "birthdate": "1988-04-20",
+          "position": "Tech Lead"
+        }),
+        headers: {"Content-type": "application/json"}
       });
   
       const data = await res.json();
@@ -34,6 +47,16 @@ export default function Home() {
       console.error("Ramon es puto");
     }
   }, [form]);
+
+  useEffect(() => {
+    const init = async () => {
+      const res = await fetch("/api/v1/employees/");
+      const data = await res.json();
+      console.info(data);
+    }
+
+    init();
+  }, [])
 
   return (
     <div
